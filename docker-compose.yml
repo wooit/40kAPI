@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+###> doctrine/doctrine-bundle ###
+  40k_db:
+    container_name: 40k_db
+    image: mariadb:10.4
+    environment:
+      MYSQL_USER: geo
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: 40k
+      MYSQL_ROOT_PASSWORD: root
+      # You should definitely change the password in production
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
+  40k_pma:
+    container_name: 40k_pma
+    image: phpmyadmin:5.2.0
+    environment:
+      PMA_HOST: 40k_db
+      PMA_USER: geo
+      PMA_PASSWORD: secret
+    ports:
+      - "8888:80"
+    links:
+      - 40k_db
+    depends_on:
+      - 40k_db
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  db-data:
+    driver: local
+###< doctrine/doctrine-bundle ###
