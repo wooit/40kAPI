@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PrimarchRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,16 @@ class Primarch
      * @ORM\Column(type="string", length=255)
      */
     private $chapter;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Book::class, mappedBy="primarch")
+     */
+    private $books;
+
+    public function __construct()
+    {
+        $this->books = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +64,33 @@ class Primarch
     public function setChapter(string $chapter): self
     {
         $this->chapter = $chapter;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Book>
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->addPrimarch($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            $book->removePrimarch($this);
+        }
 
         return $this;
     }
