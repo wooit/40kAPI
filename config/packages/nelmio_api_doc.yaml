@@ -9,5 +9,5 @@ nelmio_api_doc:
 #            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
         path_patterns: # an array of regexps
             - ^/api(?!/doc$)
-        host_patterns:
-            - ^api\.
+#        host_patterns:
+#            - ^api\.
