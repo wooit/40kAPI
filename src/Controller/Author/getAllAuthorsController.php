@@ -4,6 +4,7 @@ namespace App\Controller\Author;
 
 use App\Repository\AuthorRepository;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use JMS\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,9 +23,14 @@ class getAllAuthorsController extends AbstractController
      * @OA\Response(response="404", description="ko")
      * @OA\Response(response="500", description="ko")
      */
-    public function readALlAuthors(AuthorRepository $authorRepository) : Response
+    public function readALlAuthors(AuthorRepository $authorRepository, SerializerInterface $serializer): Response
     {
         $authors = $authorRepository->findAll();
-        return $this->json($authors);
+
+        $json = $serializer->serialize($authors,'json', null);
+
+        return new Response($json, 200, [
+            "Content-Type" => "application/json"
+        ]);
     }
 }

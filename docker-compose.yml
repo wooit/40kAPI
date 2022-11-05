@@ -27,14 +27,16 @@ services:
       # For example, to allow the host to connect to port 3306 on the container, you would change
       # "3306" to "3306:3306". Where the first port is exposed to the host and the second is the container port.
       # See https://docs.docker.com/compose/compose-file/compose-file-v3/#ports for more information.
-      - '3306'
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
   database_pma:
     container_name: 40k_pma
     image: phpmyadmin:5.2.0
     environment:
       PMA_HOST: 40k_db
-      PMA_USER: root
-      PMA_PASSWORD: password
+      PMA_USERNAME: geo
+      PMA_PASSWORD: secret
     ports:
       - "8888:80"
     links:
