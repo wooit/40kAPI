@@ -29,6 +29,11 @@ class Faction
      */
     private $books;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $loyalty;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
@@ -74,6 +79,18 @@ class Faction
         if ($this->books->removeElement($book)) {
             $book->removeFaction($this);
         }
+
+        return $this;
+    }
+
+    public function getLoyalty(): ?string
+    {
+        return $this->loyalty;
+    }
+
+    public function setLoyalty(?string $loyalty): self
+    {
+        $this->loyalty = $loyalty;
 
         return $this;
     }
