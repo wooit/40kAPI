@@ -6,6 +6,8 @@ use App\Repository\PrimarchRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=PrimarchRepository::class)
@@ -16,16 +18,20 @@ class Primarch
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"primarch_basic_info"})
+     * @Serializer\Expose():
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"primarch_basic_info"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"primarch_basic_info"})
      */
     private $chapter;
 
